@@ -59,9 +59,9 @@ namespace UI
             _statusText.color = Color.green;
         }
 
-        private void PlayFabPlayerOnLoginFailure()
+        private void PlayFabPlayerOnLoginFailure(string errorMessage)
         {
-            _statusText.text = "Login Error";
+            _statusText.text = errorMessage;
             _statusText.color = Color.red;
         }
         

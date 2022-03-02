@@ -7,10 +7,9 @@ using UnityEngine;
 public class GameStarter : MonoBehaviour
 {
     [SerializeField] 
-    private AuthForm _authForm;
+    private GameEnterWindow _gameEnterWindow;
 
     private Canvas _canvas;
-    private PlayFabPlayer _playFabPlayer;
     private PhotonPlayer _photonPlayer;
 
     private void Start()
@@ -22,11 +21,9 @@ public class GameStarter : MonoBehaviour
             PlayFabSettings.staticSettings.TitleId = "C11F0";
         }
         
-        _playFabPlayer = new PlayFabPlayer();
         _photonPlayer = new PhotonPlayer();
 
-        var authForm = Instantiate(_authForm, _canvas.transform);
-        authForm.Init(_playFabPlayer, _photonPlayer);
+        Instantiate(_gameEnterWindow);
     }
 
     private void OnDestroy()
