@@ -7,6 +7,7 @@ namespace PlayFab
     public class PlayFabPlayer
     {
         private const string AUTH_GUID_KEY = "auth_guid";
+        private const string AUTH_REMEMBERED_KEY = "auth_remembered";
         private static readonly Lazy<PlayFabPlayer> _lazy = 
             new Lazy<PlayFabPlayer>(() => new PlayFabPlayer());
 
@@ -19,6 +20,13 @@ namespace PlayFab
         
         public static PlayFabPlayer Instance => _lazy.Value;
         
+        public bool RememberMe => true;
+
+        public bool IsAuthenticated
+        {
+            get => PlayerPrefs.GetInt(AUTH_REMEMBERED_KEY, 0) != 0;
+            private set => PlayerPrefs.SetInt(AUTH_REMEMBERED_KEY, value ? 1 : 0);
+        }
         public event Action LoginSuccessEvent; 
         public event Action CreateAccountSuccessEvent; 
         public event Action SignInSuccessEvent;
@@ -31,11 +39,12 @@ namespace PlayFab
         {
             _isAccountCreated = PlayerPrefs.HasKey(AUTH_GUID_KEY);
             _id = PlayerPrefs.GetString(AUTH_GUID_KEY, Guid.NewGuid().ToString());
+
+            Login();
         }
 
         public void Login()
         {
-            
             var request = new LoginWithCustomIDRequest
             {
                 CustomId = _id, 
@@ -47,6 +56,8 @@ namespace PlayFab
         public void Logout()
         {
             PlayFabClientAPI.ForgetAllCredentials();
+            PlayerPrefs.DeleteKey(AUTH_GUID_KEY);
+            PlayerPrefs.DeleteKey(AUTH_REMEMBERED_KEY);
         }
         
         public void CreateAccount(string username, string mail, string password)
@@ -55,13 +66,25 @@ namespace PlayFab
             _email = mail;
             _password = password;
             
-            PlayFabClientAPI.RegisterPlayFabUser(new RegisterPlayFabUserRequest
+            if (RememberMe)
             {
-                Username = _username,
-                Email = _email,
-                Password = _password,
-                RequireBothUsernameAndEmail = true
-            }, OnCreateSuccess, OnCreateAccountFailure);
+                PlayFabClientAPI.AddUsernamePassword(new AddUsernamePasswordRequest()
+                {
+                    Username = _username,
+                    Email = _email,
+                    Password = _password,
+                }, OnAddUsernameAndPasswordSuccess, OnCreateAccountFailure);
+            }
+            else
+            {
+                PlayFabClientAPI.RegisterPlayFabUser(new RegisterPlayFabUserRequest
+                {
+                    Username = _username,
+                    Email = _email,
+                    Password = _password,
+                    RequireBothUsernameAndEmail = true
+                }, OnCreateSuccess, OnCreateAccountFailure);
+            }
         }
         
         public void SignIn(string username, string password)
@@ -83,7 +106,7 @@ namespace PlayFab
 
         private void OnLoginSuccess(LoginResult result)
         {
-            if (_isAccountCreated)
+            if (!_isAccountCreated)
                 PlayerPrefs.SetString(AUTH_GUID_KEY, _id);
 
             Debug.Log("Congratulations, you made successful API call!");
@@ -100,6 +123,14 @@ namespace PlayFab
         {
             Debug.Log($"Creation Success: {_username}");
             
+            CreateAccountSuccessEvent?.Invoke();
+        }
+        
+        private void OnAddUsernameAndPasswordSuccess(AddUsernamePasswordResult  result)
+        {
+            Debug.Log($"Creation Success: {_username}");
+
+            IsAuthenticated = true;
             CreateAccountSuccessEvent?.Invoke();
         }
 

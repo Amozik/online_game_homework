@@ -1,8 +1,8 @@
-using System;
 using Photon;
 using PlayFab;
 using UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameStarter : MonoBehaviour
 {
@@ -23,11 +23,24 @@ public class GameStarter : MonoBehaviour
         
         _photonPlayer = new PhotonPlayer();
 
-        Instantiate(_gameEnterWindow);
+        PlayFabPlayer.Instance.LoginSuccessEvent += OnPlayFabLogin;
+    }
+
+    private void OnPlayFabLogin()
+    {
+        if (PlayFabPlayer.Instance.IsAuthenticated)
+        {
+            SceneManager.LoadScene(1);
+        }
+        else
+        {
+            Instantiate(_gameEnterWindow);
+        } 
     }
 
     private void OnDestroy()
     {
+        PlayFabPlayer.Instance.LoginSuccessEvent -= OnPlayFabLogin;
         _photonPlayer.Dispose();
     }
 }

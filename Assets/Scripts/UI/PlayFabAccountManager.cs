@@ -9,7 +9,13 @@ namespace UI
     public class PlayFabAccountManager : MonoBehaviour
     {
         [SerializeField] 
-        private TMP_Text _titleLabel;
+        private TMP_Text _username;
+        
+        [SerializeField] 
+        private TMP_Text _playFabId;
+
+        [SerializeField] 
+        private GameObject _loadingScreen;
 
         private PlayFabPlayer _playFabPlayer;
         
@@ -21,11 +27,14 @@ namespace UI
             _playFabPlayer.GetAccountFailureEvent += OnFailure;
 
             _playFabPlayer.GetAccountInfo();
+            _loadingScreen.SetActive(true);
         }
 
         private void OnGetAccountSuccess(GetAccountInfoResult result)
         {
-            _titleLabel.text = $"Welcome back, Player ID {result.AccountInfo.PlayFabId}";
+            _loadingScreen.SetActive(false);
+            _username.text = $"Username:  {result.AccountInfo.Username}";
+            _playFabId.text = $"PlayFabId:  {result.AccountInfo.PlayFabId}";
         }
 
         private void OnFailure(string errorMessage)
