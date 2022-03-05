@@ -1,16 +1,15 @@
-using System;
 using Photon;
 using PlayFab;
 using UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameStarter : MonoBehaviour
 {
     [SerializeField] 
-    private AuthForm _authForm;
+    private GameEnterWindow _gameEnterWindow;
 
     private Canvas _canvas;
-    private PlayFabPlayer _playFabPlayer;
     private PhotonPlayer _photonPlayer;
 
     private void Start()
@@ -22,15 +21,26 @@ public class GameStarter : MonoBehaviour
             PlayFabSettings.staticSettings.TitleId = "C11F0";
         }
         
-        _playFabPlayer = new PlayFabPlayer();
         _photonPlayer = new PhotonPlayer();
 
-        var authForm = Instantiate(_authForm, _canvas.transform);
-        authForm.Init(_playFabPlayer, _photonPlayer);
+        PlayFabPlayer.Instance.LoginSuccessEvent += OnPlayFabLogin;
+    }
+
+    private void OnPlayFabLogin()
+    {
+        if (PlayFabPlayer.Instance.IsAuthenticated)
+        {
+            SceneManager.LoadScene(1);
+        }
+        else
+        {
+            Instantiate(_gameEnterWindow);
+        } 
     }
 
     private void OnDestroy()
     {
+        PlayFabPlayer.Instance.LoginSuccessEvent -= OnPlayFabLogin;
         _photonPlayer.Dispose();
     }
 }
