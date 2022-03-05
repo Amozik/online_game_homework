@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PlayFabEditorPrefsSO
   m_EditorClassIdentifier: 
   DevAccountEmail: Amozik@rambler.ru
-  DevAccountToken: rtfcknszgin577xkqdp9rkzpt4qx141mxn37msttr1mcurgchd3ixex8o53r5k9hy5tmxk8kz7n6fhtfoocyxqibgzfpqu8k1tntoij9abkp58yhg68d9gf8smcsaxuetb88qsiz6hp983ang6aeoo5o8oea8hdncwob4fe9yztf3juyg9gs7491f9eibhmgq7xnsrz5
+  DevAccountToken: 36a6iq7exw7kfxb8fbs9ucdg74oykooqt8jpkykb63xfsfidex43mxwobgkujk15pp5cqj6ygi8zkdxx14f3zaypugd3c3thmrpqupi34oze6y6uekgn1rfcww5z7wgh4gj7terc8ri45izrjdykag5g4zynfhzcfyj74ymdizd5q3geys8oomx9z8u73j3ndfhey9h5
   SelectedStudio: Pigeon Tea
   SdkPath: Assets/PlayFabSDK
   EdExPath: 

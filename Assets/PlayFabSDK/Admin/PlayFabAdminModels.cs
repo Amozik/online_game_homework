@@ -226,91 +226,6 @@ namespace PlayFab.AdminModels
     }
 
     [Serializable]
-    public class AddServerBuildRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// server host regions in which this build should be running and available
-        /// </summary>
-        public List<Region> ActiveRegions;
-        /// <summary>
-        /// unique identifier for the build executable
-        /// </summary>
-        public string BuildId;
-        /// <summary>
-        /// appended to the end of the command line when starting game servers
-        /// </summary>
-        public string CommandLineTemplate;
-        /// <summary>
-        /// developer comment(s) for this build
-        /// </summary>
-        public string Comment;
-        /// <summary>
-        /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
-        /// </summary>
-        public Dictionary<string,string> CustomTags;
-        /// <summary>
-        /// path to the game server executable. Defaults to gameserver.exe
-        /// </summary>
-        public string ExecutablePath;
-        /// <summary>
-        /// maximum number of game server instances that can run on a single host machine
-        /// </summary>
-        public int MaxGamesPerHost;
-        /// <summary>
-        /// minimum capacity of additional game server instances that can be started before the autoscaling service starts new host
-        /// machines (given the number of current running host machines and game server instances)
-        /// </summary>
-        public int MinFreeGameSlots;
-    }
-
-    [Serializable]
-    public class AddServerBuildResult : PlayFabResultCommon
-    {
-        /// <summary>
-        /// array of regions where this build can used, when it is active
-        /// </summary>
-        public List<Region> ActiveRegions;
-        /// <summary>
-        /// unique identifier for this build executable
-        /// </summary>
-        public string BuildId;
-        /// <summary>
-        /// appended to the end of the command line when starting game servers
-        /// </summary>
-        public string CommandLineTemplate;
-        /// <summary>
-        /// developer comment(s) for this build
-        /// </summary>
-        public string Comment;
-        /// <summary>
-        /// path to the game server executable. Defaults to gameserver.exe
-        /// </summary>
-        public string ExecutablePath;
-        /// <summary>
-        /// maximum number of game server instances that can run on a single host machine
-        /// </summary>
-        public int MaxGamesPerHost;
-        /// <summary>
-        /// minimum capacity of additional game server instances that can be started before the autoscaling service starts new host
-        /// machines (given the number of current running host machines and game server instances)
-        /// </summary>
-        public int MinFreeGameSlots;
-        /// <summary>
-        /// the current status of the build validation and processing steps
-        /// </summary>
-        public GameBuildStatus? Status;
-        /// <summary>
-        /// time this build was last modified (or uploaded, if this build has never been modified)
-        /// </summary>
-        public DateTime Timestamp;
-        /// <summary>
-        /// Unique identifier for the title, found in the Settings > Game Properties section of the PlayFab developer site when a
-        /// title has been selected.
-        /// </summary>
-        public string TitleId;
-    }
-
-    [Serializable]
     public class AddUserVirtualCurrencyRequest : PlayFabRequestCommon
     {
         /// <summary>
@@ -391,10 +306,6 @@ namespace PlayFab.AdminModels
         /// The IP address on which the ban was applied. May affect multiple players.
         /// </summary>
         public string IPAddress;
-        /// <summary>
-        /// The MAC address on which the ban was applied. May affect multiple players.
-        /// </summary>
-        public string MACAddress;
         /// <summary>
         /// Unique PlayFab assigned ID of the user on whom the operation will be performed.
         /// </summary>
@@ -656,6 +567,14 @@ namespace PlayFab.AdminModels
         /// The amount of the specified resource remaining.
         /// </summary>
         public int Amount;
+    }
+
+    public enum ChurnRiskLevel
+    {
+        NoData,
+        LowRisk,
+        MediumRisk,
+        HighRisk
     }
 
     [Serializable]
@@ -2431,9 +2350,21 @@ namespace PlayFab.AdminModels
         ApiNotEnabledForTitle,
         DuplicateTitleNameForPublisher,
         AzureTitleCreationInProgress,
-        DuplicateAzureResourceId,
-        TitleContraintsPublisherDeletion,
+        TitleConstraintsPublisherDeletion,
         InvalidPlayerAccountPoolId,
+        PlayerAccountPoolNotFound,
+        PlayerAccountPoolDeleted,
+        TitleCleanupInProgress,
+        AzureResourceConcurrentOperationInProgress,
+        TitlePublisherUpdateNotAllowed,
+        AzureResourceManagerNotSupportedInStamp,
+        ApiNotIncludedInAzurePlayFabFeatureSet,
+        GoogleServiceAccountFailedAuth,
+        GoogleAPIServiceUnavailable,
+        GoogleAPIServiceUnknownError,
+        NoValidIdentityForAad,
+        PlayerIdentityLinkNotFound,
+        PhotonApplicationIdAlreadyInUse,
         MatchmakingEntityInvalid,
         MatchmakingPlayerAttributesInvalid,
         MatchmakingQueueNotFound,
@@ -2457,7 +2388,7 @@ namespace PlayFab.AdminModels
         MatchmakingBadRequest,
         PubSubFeatureNotEnabledForTitle,
         PubSubTooManyRequests,
-        PubSubConnectionHandleAccessDenied,
+        PubSubConnectionNotFoundForEntity,
         PubSubConnectionHandleInvalid,
         PubSubSubscriptionLimitExceeded,
         TitleConfigNotFound,
@@ -2581,7 +2512,9 @@ namespace PlayFab.AdminModels
         EventSinkConnectionInvalid,
         EventSinkConnectionUnauthorized,
         EventSinkRegionInvalid,
-        OperationCanceled
+        OperationCanceled,
+        InvalidDisplayNameRandomSuffixLength,
+        AllowNonUniquePlayerDisplayNamesDisableNotAllowed
     }
 
     [Serializable]
@@ -3303,24 +3236,6 @@ namespace PlayFab.AdminModels
         public string TitleId;
     }
 
-    [Serializable]
-    public class GetServerBuildUploadURLRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// unique identifier of the game server build to upload
-        /// </summary>
-        public string BuildId;
-    }
-
-    [Serializable]
-    public class GetServerBuildUploadURLResult : PlayFabResultCommon
-    {
-        /// <summary>
-        /// pre-authorized URL for uploading the game server build package
-        /// </summary>
-        public string URL;
-    }
-
     /// <summary>
     /// A store contains an array of references to items defined in the catalog, along with the prices for the item, in both
     /// real world and virtual currencies. These prices act as an override to any prices defined in the catalog. In this way,
@@ -3534,7 +3449,8 @@ namespace PlayFab.AdminModels
     /// <summary>
     /// All items currently in the user inventory will be returned, irrespective of how they were acquired (via purchasing,
     /// grants, coupons, etc.). Items that are expired, fully consumed, or are no longer valid are not considered to be in the
-    /// user's current inventory, and so will not be not included.
+    /// user's current inventory, and so will not be not included. There can be a delay of up to a half a second for inventory
+    /// changes to be reflected in the GetUserInventory API response.
     /// </summary>
     [Serializable]
     public class GetUserInventoryRequest : PlayFabRequestCommon
@@ -4158,31 +4074,6 @@ namespace PlayFab.AdminModels
         public List<SubscriptionModel> Subscriptions;
     }
 
-    /// <summary>
-    /// These details are used by the PlayFab matchmaking service to determine if an existing Game Server Instance has room for
-    /// additional users, and by the PlayFab game server management service to determine when a new Game Server Host should be
-    /// created in order to prevent excess load on existing Hosts. This operation is not additive. Using it will cause the game
-    /// mode definition for the game server executable in question to be created from scratch. If there is an existing game
-    /// server mode definition for the given BuildVersion, it will be deleted and replaced with the data specified in this call.
-    /// </summary>
-    [Serializable]
-    public class ModifyMatchmakerGameModesRequest : PlayFabRequestCommon
-    {
-        /// <summary>
-        /// previously uploaded build version for which game modes are being specified
-        /// </summary>
-        public string BuildVersion;
-        /// <summary>
-        /// array of game modes (Note: this will replace all game modes for the indicated build version)
-        /// </summary>
-        public List<GameModeInfo> GameModes;
-    }
-
-    [Serializable]
-    public class ModifyMatchmakerGameModesResult : PlayFabResultCommon
-    {
-    }
-
     [Serializable]
     public class ModifyServerBuildRequest : PlayFabRequestCommon
     {
@@ -4385,6 +4276,45 @@ namespace PlayFab.AdminModels
         /// 'pfrn:api--/Client/ConfirmPurchase' for specific apis.
         /// </summary>
         public string Resource;
+    }
+
+    [Serializable]
+    public class PlayerChurnPredictionSegmentFilter : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Comparison
+        /// </summary>
+        public SegmentFilterComparison? Comparison;
+        /// <summary>
+        /// RiskLevel
+        /// </summary>
+        public ChurnRiskLevel? RiskLevel;
+    }
+
+    [Serializable]
+    public class PlayerChurnPredictionTimeSegmentFilter : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Comparison
+        /// </summary>
+        public SegmentFilterComparison? Comparison;
+        /// <summary>
+        /// DurationInDays
+        /// </summary>
+        public double DurationInDays;
+    }
+
+    [Serializable]
+    public class PlayerChurnPreviousPredictionSegmentFilter : PlayFabBaseModel
+    {
+        /// <summary>
+        /// Comparison
+        /// </summary>
+        public SegmentFilterComparison? Comparison;
+        /// <summary>
+        /// RiskLevel
+        /// </summary>
+        public ChurnRiskLevel? RiskLevel;
     }
 
     [Serializable]
@@ -5335,6 +5265,18 @@ namespace PlayFab.AdminModels
         /// </summary>
         public LocationSegmentFilter LocationFilter;
         /// <summary>
+        /// Filter property for current player churn value.
+        /// </summary>
+        public PlayerChurnPredictionSegmentFilter PlayerChurnPredictionFilter;
+        /// <summary>
+        /// Filter property for player churn timespan.
+        /// </summary>
+        public PlayerChurnPredictionTimeSegmentFilter PlayerChurnPredictionTimeFilter;
+        /// <summary>
+        /// Filter property for previous player churn value.
+        /// </summary>
+        public PlayerChurnPreviousPredictionSegmentFilter PlayerChurnPreviousPredictionFilter;
+        /// <summary>
         /// Filter property for push notification.
         /// </summary>
         public PushNotificationSegmentFilter PushNotificationFilter;
@@ -5825,10 +5767,6 @@ namespace PlayFab.AdminModels
     public class SegmentModel : PlayFabBaseModel
     {
         /// <summary>
-        /// ResourceId of Segment resource
-        /// </summary>
-        public string AzureResourceId;
-        /// <summary>
         /// Segment description.
         /// </summary>
         public string Description;
@@ -6082,10 +6020,6 @@ namespace PlayFab.AdminModels
     public class SetTitleDataRequest : PlayFabRequestCommon
     {
         /// <summary>
-        /// Id of azure resource
-        /// </summary>
-        public string AzureResourceId;
-        /// <summary>
         /// The optional custom tags associated with the request (e.g. build number, external trace identifiers, etc.).
         /// </summary>
         public Dictionary<string,string> CustomTags;
@@ -6108,10 +6042,6 @@ namespace PlayFab.AdminModels
     [Serializable]
     public class SetTitleDataResult : PlayFabResultCommon
     {
-        /// <summary>
-        /// Id of azure resource
-        /// </summary>
-        public string AzureResourceId;
     }
 
     /// <summary>
