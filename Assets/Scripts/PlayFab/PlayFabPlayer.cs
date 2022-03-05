@@ -27,6 +27,9 @@ namespace PlayFab
             get => PlayerPrefs.GetInt(AUTH_REMEMBERED_KEY, 0) != 0;
             private set => PlayerPrefs.SetInt(AUTH_REMEMBERED_KEY, value ? 1 : 0);
         }
+        
+        public PlayFabCatalog PlayFabCatalog;
+        
         public event Action LoginSuccessEvent; 
         public event Action CreateAccountSuccessEvent; 
         public event Action SignInSuccessEvent;
@@ -110,6 +113,8 @@ namespace PlayFab
                 PlayerPrefs.SetString(AUTH_GUID_KEY, _id);
 
             Debug.Log("Congratulations, you made successful API call!");
+
+            PlayFabCatalog = new PlayFabCatalog();
             
             LoginSuccessEvent?.Invoke();
         }

@@ -1,0 +1,177 @@
+{
+  "CatalogVersion": "main_1.0.0",
+  "Catalog": [
+    {
+      "ItemId": "wooden_shield",
+      "ItemClass": null,
+      "CatalogVersion": "main_1.0.0",
+      "DisplayName": "Wooden Shield",
+      "Description": "It’s my first catalog item ever",
+      "VirtualCurrencyPrices": {
+        "GD": 100
+      },
+      "RealCurrencyPrices": {},
+      "Tags": [
+        "shields",
+        "shmields"
+      ],
+      "CustomData": null,
+      "Consumable": {
+        "UsageCount": null,
+        "UsagePeriod": null,
+        "UsagePeriodGroup": null
+      },
+      "Container": null,
+      "Bundle": null,
+      "CanBecomeCharacter": false,
+      "IsStackable": false,
+      "IsTradable": true,
+      "ItemImageUrl": null,
+      "IsLimitedEdition": false,
+      "InitialLimitedEditionCount": 0,
+      "ActivatedMembership": null
+    },
+    {
+      "ItemId": "wooden_sword",
+      "ItemClass": null,
+      "CatalogVersion": "main_1.0.0",
+      "DisplayName": "Wooden Sword",
+      "Description": null,
+      "VirtualCurrencyPrices": {
+        "GD": 200
+      },
+      "RealCurrencyPrices": {},
+      "Tags": [
+        "swords",
+        "shmords"
+      ],
+      "CustomData": null,
+      "Consumable": {
+        "UsageCount": null,
+        "UsagePeriod": null,
+        "UsagePeriodGroup": null
+      },
+      "Container": null,
+      "Bundle": null,
+      "CanBecomeCharacter": false,
+      "IsStackable": false,
+      "IsTradable": true,
+      "ItemImageUrl": null,
+      "IsLimitedEdition": false,
+      "InitialLimitedEditionCount": 0,
+      "ActivatedMembership": null
+    },
+    {
+      "ItemId": "starter_pack",
+      "ItemClass": null,
+      "CatalogVersion": "main_1.0.0",
+      "DisplayName": "Starter Pack",
+      "Description": null,
+      "VirtualCurrencyPrices": {
+        "RM": 199
+      },
+      "RealCurrencyPrices": null,
+      "Tags": [
+        "packs"
+      ],
+      "CustomData": null,
+      "Consumable": {
+        "UsageCount": 1,
+        "UsagePeriod": null,
+        "UsagePeriodGroup": null
+      },
+      "Container": null,
+      "Bundle": {
+        "BundledItems": [],
+        "BundledResultTables": [],
+        "BundledVirtualCurrencies": {
+          "GD": 1000
+        }
+      },
+      "CanBecomeCharacter": false,
+      "IsStackable": false,
+      "IsTradable": false,
+      "ItemImageUrl": null,
+      "IsLimitedEdition": false,
+      "InitialLimitedEditionCount": 0,
+      "ActivatedMembership": null
+    },
+    {
+      "ItemId": "welcome_bundle",
+      "ItemClass": null,
+      "CatalogVersion": "main_1.0.0",
+      "DisplayName": "Welcome Pack",
+      "Description": null,
+      "VirtualCurrencyPrices": {
+        "RM": 599
+      },
+      "RealCurrencyPrices": null,
+      "Tags": [
+        "bundles"
+      ],
+      "CustomData": null,
+      "Consumable": {
+        "UsageCount": 1,
+        "UsagePeriod": null,
+        "UsagePeriodGroup": null
+      },
+      "Container": null,
+      "Bundle": {
+        "BundledItems": [
+          "wooden_shield",
+          "wooden_sword"
+        ],
+        "BundledResultTables": [],
+        "BundledVirtualCurrencies": {
+          "GD": 10000
+        }
+      },
+      "CanBecomeCharacter": false,
+      "IsStackable": false,
+      "IsTradable": false,
+      "ItemImageUrl": null,
+      "IsLimitedEdition": false,
+      "InitialLimitedEditionCount": 0,
+      "ActivatedMembership": null
+    },
+    {
+      "ItemId": "wooden_chest",
+      "ItemClass": null,
+      "CatalogVersion": "main_1.0.0",
+      "DisplayName": "Wooden Chest",
+      "Description": null,
+      "VirtualCurrencyPrices": {},
+      "RealCurrencyPrices": null,
+      "Tags": [
+        "chests",
+        "wooden"
+      ],
+      "CustomData": null,
+      "Consumable": {
+        "UsageCount": 1,
+        "UsagePeriod": null,
+        "UsagePeriodGroup": null
+      },
+      "Container": {
+        "KeyItemId": null,
+        "ItemContents": [
+          "wooden_shield",
+          "wooden_sword"
+        ],
+        "ResultTableContents": [],
+        "VirtualCurrencyContents": {
+          "GD": 1000
+        }
+      },
+      "Bundle": null,
+      "CanBecomeCharacter": false,
+      "IsStackable": false,
+      "IsTradable": false,
+      "ItemImageUrl": null,
+      "IsLimitedEdition": false,
+      "InitialLimitedEditionCount": 0,
+      "ActivatedMembership": null
+    }
+  ],
+  "DropTables": []
+}
