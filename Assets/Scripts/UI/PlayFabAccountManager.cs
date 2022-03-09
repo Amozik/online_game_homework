@@ -44,8 +44,8 @@ namespace UI
 
         private void OnDestroy()
         {
-            _playFabPlayer.GetAccountSuccessEvent += OnGetAccountSuccess;
-            _playFabPlayer.GetAccountFailureEvent += OnFailure;
+            _playFabPlayer.GetAccountSuccessEvent -= OnGetAccountSuccess;
+            _playFabPlayer.GetAccountFailureEvent -= OnFailure;
         }
     }
 }
