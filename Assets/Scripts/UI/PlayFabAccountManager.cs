@@ -35,6 +35,12 @@ namespace UI
             _loadingScreen.SetActive(false);
             _username.text = $"Username:  {result.AccountInfo.Username}";
             _playFabId.text = $"PlayFabId:  {result.AccountInfo.PlayFabId}";
+
+            var catalogItems = _playFabPlayer.PlayFabCatalog.GetItems();
+            foreach (var catalogItem in catalogItems)
+            {
+                Debug.Log($"Item: {catalogItem.Key}, ID: {catalogItem.Value.ItemId}");
+            }
         }
 
         private void OnFailure(string errorMessage)
