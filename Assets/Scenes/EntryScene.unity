@@ -394,7 +394,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbd44ca34009eeb4aa9557e7da47acee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _authForm: {fileID: 2988485575660145776, guid: fcca6df2b5edb094a9608f6db8b38eb7, type: 3}
+  _gameEnterWindow: {fileID: 7462211995819350491, guid: 3fc883ed063efea4cb6447d34f0b33b0, type: 3}
 --- !u!4 &1394410670
 Transform:
   m_ObjectHideFlags: 0
@@ -427,7 +427,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1552556143
 MonoBehaviour:
   m_ObjectHideFlags: 0
