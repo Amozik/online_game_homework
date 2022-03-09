@@ -10,7 +10,6 @@ public class GameStarter : MonoBehaviour
     private GameEnterWindow _gameEnterWindow;
 
     private Canvas _canvas;
-    private PhotonPlayer _photonPlayer;
 
     private void Start()
     {
@@ -20,8 +19,6 @@ public class GameStarter : MonoBehaviour
         {
             PlayFabSettings.staticSettings.TitleId = "C11F0";
         }
-        
-        _photonPlayer = new PhotonPlayer();
 
         PlayFabPlayer.Instance.LoginSuccessEvent += OnPlayFabLogin;
     }
@@ -41,6 +38,5 @@ public class GameStarter : MonoBehaviour
     private void OnDestroy()
     {
         PlayFabPlayer.Instance.LoginSuccessEvent -= OnPlayFabLogin;
-        _photonPlayer.Dispose();
     }
 }

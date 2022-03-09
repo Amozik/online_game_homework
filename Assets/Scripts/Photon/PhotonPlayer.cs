@@ -8,6 +8,11 @@ namespace Photon
 {
     public class PhotonPlayer : IConnectionCallbacks, IDisposable
     {
+        private static readonly Lazy<PhotonPlayer> _lazy = 
+            new Lazy<PhotonPlayer>(() => new PhotonPlayer());
+        
+        public static PhotonPlayer Instance => _lazy.Value;
+        
         public event Action ConnectEvent; 
         public event Action DisconnectEvent; 
         
