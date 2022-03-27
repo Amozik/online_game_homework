@@ -1,4 +1,5 @@
 using System;
+using Photon;
 using PlayFab;
 using PlayFab.ClientModels;
 using TMPro;
@@ -35,6 +36,8 @@ namespace UI
             _loadingScreen.SetActive(false);
             _username.text = $"Username:  {result.AccountInfo.Username}";
             _playFabId.text = $"PlayFabId:  {result.AccountInfo.PlayFabId}";
+            
+            PhotonPlayer.Username = result.AccountInfo.Username;
 
             var catalogItems = _playFabPlayer.PlayFabCatalog.GetItems();
             foreach (var catalogItem in catalogItems)
