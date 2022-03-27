@@ -29,6 +29,7 @@ namespace PlayFab
         }
         
         public PlayFabCatalog PlayFabCatalog;
+        public PlayFabUserData PlayFabUserData;
         
         public event Action LoginSuccessEvent; 
         public event Action CreateAccountSuccessEvent; 
@@ -114,6 +115,7 @@ namespace PlayFab
 
             Debug.Log("Congratulations, you made successful API call!");
 
+            PlayFabUserData = new PlayFabUserData(result.PlayFabId);
             PlayFabCatalog = new PlayFabCatalog();
             
             LoginSuccessEvent?.Invoke();
