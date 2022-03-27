@@ -13,8 +13,16 @@ namespace Photon
         
         public static PhotonPlayer Instance => _lazy.Value;
         
+        public static string Username
+        {
+            get => PhotonNetwork.NickName;
+            set => PhotonNetwork.NickName = value;
+        }
+
         public event Action ConnectEvent; 
         public event Action DisconnectEvent; 
+        
+        private bool _isConnecting;
         
         public PhotonPlayer()
         {
@@ -24,6 +32,8 @@ namespace Photon
 
         public void Connect()
         {
+            _isConnecting = true;
+            
             if (PhotonNetwork.IsConnected)
             {
                 PhotonNetwork.JoinRandomRoom();
@@ -49,12 +59,19 @@ namespace Photon
         {
             Debug.Log("OnConnectedToMaster() was called by PUN");
             
+            if (_isConnecting)
+            {
+                PhotonNetwork.JoinRandomRoom();
+            }
+            
             ConnectEvent?.Invoke();
         }
 
         public void OnDisconnected(DisconnectCause cause)
         {
             Debug.Log("Photon Server Disconnected");
+
+            _isConnecting = false;
             
             DisconnectEvent?.Invoke();    
         }

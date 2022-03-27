@@ -235,7 +235,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 263975713}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7cdb613c99994da6b0994b07d77cb3b6, type: 3}
   m_Name: 
@@ -252,11 +252,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 263975713}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 277d1c685011441fa7423f328717f7e5, type: 3}
+  m_Script: {fileID: 11500000, guid: 5203a1addcdf4ad7b3513b3667debeb0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _roomsList: {fileID: 2126977136}
-  _roomItem: {fileID: 3302169540217561385, guid: b0d49eeb6329ce54c82b5ac8689ab732, type: 3}
+  _maxPlayersPerRoom: 4
+  _launchButton: {fileID: 1172808685}
+  _loadingScreen: {fileID: 674440218}
 --- !u!1 &380261122
 GameObject:
   m_ObjectHideFlags: 0
@@ -800,7 +801,7 @@ GameObject:
   - component: {fileID: 1172808686}
   - component: {fileID: 1172808685}
   m_Layer: 5
-  m_Name: Button
+  m_Name: LaunchButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1192,7 +1193,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: Launch
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
