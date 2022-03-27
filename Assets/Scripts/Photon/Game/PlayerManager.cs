@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using PlayFab;
+using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.SceneManagement;
 
@@ -6,6 +8,8 @@ namespace Photon.Pun.Demo.PunBasics
 {
     public class PlayerManager : MonoBehaviourPunCallbacks, IPunObservable
     {
+        private const string HEATH_KEY = "Health";
+        
         [Tooltip("The current Health of our player")]
         public float Health = 1f;
 
@@ -21,6 +25,7 @@ namespace Photon.Pun.Demo.PunBasics
         private GameObject beams;
         
         bool _isFiring;
+        private PlayFabUserData _playFabUserData;
         
         public void Awake()
         {
@@ -38,6 +43,8 @@ namespace Photon.Pun.Demo.PunBasics
             if (photonView.IsMine)
             {
                 LocalPlayerInstance = gameObject;
+                _playFabUserData = PlayFabPlayer.Instance.PlayFabUserData;
+                SaveHealth(Health);
             }
 
             // #Critical
@@ -123,6 +130,7 @@ namespace Photon.Pun.Demo.PunBasics
             }
 
             Health -= 0.1f;
+            SaveHealth(Health);
         }
         
         public void OnTriggerStay(Collider other)
@@ -141,7 +149,8 @@ namespace Photon.Pun.Demo.PunBasics
             }
 
             // we slowly affect health when beam is constantly hitting us, so player has to move to prevent death.
-            Health -= 0.1f*Time.deltaTime;
+            Health -= 0.1f * Time.deltaTime;
+            SaveHealth(Health);
         }
 
 #if !UNITY_5_4_OR_NEWER
@@ -206,14 +215,25 @@ namespace Photon.Pun.Demo.PunBasics
             {
                 // We own this player: send the others our data
                 stream.SendNext(_isFiring);
-                stream.SendNext(Health);
+                GetHealth(stream.SendNext);
             }
             else
             {
                 // Network player, receive data
                 _isFiring = (bool)stream.ReceiveNext();
                 Health = (float)stream.ReceiveNext();
+                SaveHealth(Health);
             }
+        }
+
+        private void SaveHealth(float value)
+        {
+            _playFabUserData.SetData(HEATH_KEY, value.ToString());
+        }
+
+        private void GetHealth(Action<string> callback)
+        {
+            _playFabUserData.GetUserData(HEATH_KEY, callback);
         }
     }
 }
