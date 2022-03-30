@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using PlayFab.ClientModels;
 using UnityEngine;
 
@@ -16,6 +17,16 @@ namespace PlayFab
         public Dictionary<string, CatalogItem> GetItems()
         {
             return _catalog;
+        }
+
+        public void PurchaseItem(string itemId, int price = 0, Action callback = null)
+        {
+            PlayFabClientAPI.PurchaseItem(new PurchaseItemRequest
+            {
+                ItemId = itemId,
+                Price = price,
+                VirtualCurrency = "GD"
+            }, result => callback?.Invoke(), OnFailure);
         }
 
         private void OnGetCatalogSuccess(GetCatalogItemsResult result)
